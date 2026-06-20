@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Twitchバッジ・チャンネルポイントアイコンの初心者向けかんたんビジュアルガイド。ポンと置くだけでクッキリ綺麗なバッジが作れます。">
+    <title>Twitch Neon Badge Pro | 1分でわかるかんたんガイド</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- アプリ本編のCSSをリンク -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            /* ライトモード用に変数をオーバーライド */
+            --bg-dark:           #f6f8fb; /* 明るく爽やかな薄グレーブルー */
+            --bg-card:           #ffffff; /* 真っ白なカード */
+            --bg-card-border:    rgba(123, 77, 255, 0.08);
+
+            --text-primary:      #2d263e; /* やさしい暗さの紫グレー */
+            --text-secondary:    #5c556e;
+            --text-muted:        #8e87a0;
+
+            --purple-500:        #7445f2; /* 目に優しいパステルパープル */
+            --purple-400:        #8c63ff;
+            --purple-300:        #b091ff;
+            --cyan-400:          #008be5; /* 爽やかなアクアブルー */
+            --green-400:         #1ca89b; /* やさしいミントグリーン */
+            --yellow-400:        #e09200; /* 温かみのあるゴールド */
+            --pink-400:          #e64566; /* パステルローズピンク */
+
+            --border-dim:        rgba(123, 77, 255, 0.08);
+            --border-accent:     rgba(123, 77, 255, 0.25);
+            --radius:            24px; /* 丸みのあるやさしいシルエット */
+            --radius-sm:         14px;
+            --font-display:      'M PLUS Rounded 1c', sans-serif;
+            --font-body:         'M PLUS Rounded 1c', sans-serif;
+        }
+
+        body {
+            line-height: 2.0; /* ゆったりとした行間 */
+            overflow-x: hidden;
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .glass-bg {
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 10%, rgba(116, 69, 242, 0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 50% at 85% 80%, rgba(0, 139, 229, 0.04) 0%, transparent 70%),
+                #f6f8fb !important;
+            pointer-events: none;
+        }
+
+        .lp-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ヘッダーのライトモード化 */
+        .nav-header {
+            background: rgba(255, 255, 255, 0.85) !important;
+            border-bottom: 1px solid rgba(123, 77, 255, 0.08) !important;
+            backdrop-filter: blur(12px) !important;
+            padding: 1rem 1.5rem !important;
+            border-radius: 0 0 16px 16px !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02) !important;
+            margin-bottom: 3rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo span {
+            color: var(--text-primary) !important;
+            font-weight: 800;
+        }
+        .back-btn {
+            background: rgba(123, 77, 255, 0.06) !important;
+            color: var(--purple-500) !important;
+            border: 1px solid rgba(123, 77, 255, 0.12) !important;
+            box-shadow: none !important;
+            border-radius: 30px !important;
+            padding: 0.5rem 1.2rem !important;
+            font-size: 0.85rem !important;
+            font-weight: 700 !important;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-btn:hover {
+            background: var(--purple-500) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+
+        /* Hero Banner */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4.5rem;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            padding-top: 12px;
+            display: block;
+        }
+        .hero-title span {
+            background: linear-gradient(135deg, var(--purple-500) 0%, var(--cyan-400) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding: 0 6px;
+        }
+        .hero-desc {
+            max-width: 720px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 2.0;
+        }
+
+        /* Concept Visual Section (1カラム縦並びレイアウト) */
+        .intro-visual-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3.5rem;
+            margin-bottom: 5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .intro-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius);
+            padding: 3.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            box-shadow: 0 10px 30px rgba(123, 77, 255, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            transition: border-color var(--transition), box-shadow var(--transition);
+            font-size: 1.08rem;
+        }
+        .intro-card:hover {
+            border-color: var(--border-accent);
+            box-shadow: 0 15px 35px rgba(123, 77, 255, 0.08);
+        }
+        .intro-card h3 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            line-height: 1.5;
+        }
+        .intro-card h3 i {
+            font-size: 1.6rem;
+        }
+        .intro-card h3 span {
+            color: var(--purple-500);
+        }
+        .intro-card-lead {
+            font-size: 1.12rem;
+            color: var(--text-secondary);
+            line-height: 2.0;
+            margin-bottom: 0.5rem;
+        }
+        .intro-card p {
+            line-height: 2.0;
+            margin-bottom: 0.8rem;
+        }
+        
+        /* 1時間目：バッジ進化タイムライン(実例) */
+        .evolution-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            background: rgba(123, 77, 255, 0.03);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem 2rem;
+            margin: 2rem auto 0;
+            max-width: 720px;
+            width: 100%;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .evo-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            max-width: 110px;
+        }
+        .evo-img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 2px solid rgba(123, 77, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform var(--transition);
+        }
+        .evo-cell:hover .evo-img {
+            transform: scale(1.2) rotate(4deg);
+        }
+        .evo-arrow {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .evo-lbl {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.3;
+        }
+        .evo-cell:hover .evo-lbl {
+            color: var(--text-primary);
+        }
+
+        /* 2時間目：3サイズ実寸対比 */
+        .size-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2.2rem;
+            background: rgba(123, 77, 255, 0.03);
+            border: 1px solid var(--border-dim);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            margin: 2rem auto 0;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .size-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .size-wrap {
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px dashed rgba(123, 77, 255, 0.18);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: border-color var(--transition), background var(--transition);
+        }
+        .size-wrap:hover {
+            border-color: var(--purple-500);
+            background: rgba(123, 77, 255, 0.08);
+        }
+        .size-wrap.sz-72 { width: 84px; height: 84px; }
+        .size-wrap.sz-36 { width: 54px; height: 54px; }
+        .size-wrap.sz-18 { width: 36px; height: 36px; }
+        
+        .char-img {
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: none;
+        }
+        .sz-72 .char-img { width: 72px; height: 72px; }
+        .sz-36 .char-img { width: 36px; height: 36px; }
+        .sz-18 .char-img { width: 18px; height: 18px; }
+        
+        .size-lbl {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        /* 3ステップ解説 (2カラムレイアウト化) */
+        .step-showcase {
+            margin-bottom: 5rem;
+        }
+        .step-heading {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        .step-heading h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: 0.04em;
+        }
+        .step-heading p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .step-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5rem;
+        }
+        .step-block {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 2.8rem;
+            align-items: stretch;
+            position: relative;
+        }
+        
+        /* 狭い幅では1列に */
+        @media (max-width: 960px) {
+            .step-block {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .step-meta-container {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: -0.8rem;
+        }
+        .step-badge {
+            background: var(--purple-500);
+            color: #fff;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 0.25rem 0.9rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 10px rgba(116, 69, 242, 0.15);
+        }
+        .step-block:nth-child(even) .step-badge {
+            background: var(--cyan-400);
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 139, 229, 0.15);
+        }
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .step-title span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 0.8rem;
+        }
+
+        /* 巨大PCブラウザフレーム */
+        .browser-mockup {
+            width: 100%;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid rgba(123, 77, 255, 0.12);
+            box-shadow: 0 15px 35px rgba(123, 77, 255, 0.06);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .browser-bar {
+            background: rgba(123, 77, 255, 0.03);
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid rgba(123, 77, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .browser-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .browser-dot {
+            width: 11px; height: 11px; border-radius: 50%;
+        }
+        .browser-dot.red { background: #ff5555; }
+        .browser-dot.yellow { background: #ffb86c; }
+        .browser-dot.green { background: #50fa7b; }
+        .browser-url {
+            flex-grow: 1;
+            max-width: 520px;
+            background: #ffffff;
+            border: 1px solid rgba(123, 77, 255, 0.1);
+            border-radius: 5px;
+            padding: 0.25rem 1rem;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .browser-url span { color: var(--purple-500); }
+
+        .browser-screenshot-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 280px;
+            background: #fdfdfe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .browser-screenshot-wrapper img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+        .browser-screenshot-placeholder {
+            position: absolute;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 1.5rem;
+            width: 100%;
+            box-sizing: border-box;
+            background: radial-gradient(circle, rgba(123, 77, 255, 0.04) 0%, transparent 80%);
+        }
+        .browser-screenshot-placeholder i {
+            font-size: 2.2rem;
+            color: var(--purple-500);
+            text-shadow: none;
+            animation: pulseIcon 2s infinite alternate ease-in-out;
+        }
+        @keyframes pulseIcon {
+            from { transform: scale(1); opacity: 0.7; }
+            to { transform: scale(1.15); opacity: 1; }
+        }
+        .browser-screenshot-placeholder strong {
+            color: var(--text-primary);
+            font-size: 0.88rem;
+        }
+        .browser-screenshot-placeholder span {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        /* 機能解説ポイントカード */
+        .step-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius);
+            padding: 2.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            box-shadow: 0 10px 30px rgba(123, 77, 255, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            height: 100%;
+            justify-content: center;
+            box-sizing: border-box;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .step-block:hover .step-info-card {
+            border-color: var(--border-accent);
+            box-shadow: 0 15px 35px rgba(123, 77, 255, 0.08);
+        }
+        .step-info-card h4 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 0.7rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        .step-info-card h4 i {
+            color: var(--cyan-400);
+            filter: none;
+        }
+        .step-block:nth-child(even) .step-info-card h4 i {
+            color: var(--purple-500);
+            filter: none;
+        }
+        .step-points-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+        .step-point-item {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.8;
+        }
+        .step-point-item i {
+            color: var(--cyan-400);
+            margin-top: 0.3rem;
+            font-size: 0.95rem;
+        }
+        .step-block:nth-child(even) .step-point-item i {
+            color: var(--purple-500);
+        }
+        .step-point-item strong {
+            color: var(--text-primary);
+        }
+        .step-result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(0, 139, 229, 0.06);
+            border: 1px solid rgba(0, 139, 229, 0.15);
+            color: var(--cyan-400);
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 0.8rem;
+            align-self: flex-start;
+            box-shadow: none;
+        }
+        .step-result-badge.purple-theme {
+            background: rgba(116, 69, 242, 0.06);
+            border-color: rgba(116, 69, 242, 0.15);
+            color: var(--purple-500);
+            box-shadow: none;
+        }
+        .step-result-badge.green-theme {
+            background: rgba(28, 168, 155, 0.06);
+            border-color: rgba(28, 168, 155, 0.15);
+            color: var(--green-400);
+            box-shadow: none;
+        }
+
+        /* ◯✕比較表 */
+        .comparison-section {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius);
+            padding: 3.5rem;
+            margin-bottom: 5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(123, 77, 255, 0.04);
+        }
+        .comparison-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+        .comparison-table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.05rem;
+            text-align: left;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid rgba(123, 77, 255, 0.08);
+        }
+        .comparison-table th {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--purple-500);
+            background: rgba(123, 77, 255, 0.04);
+        }
+        .comparison-table td:nth-child(2) {
+            color: var(--text-muted);
+        }
+        .comparison-table td:nth-child(3) {
+            color: var(--cyan-400);
+            font-weight: 700;
+            text-shadow: none;
+        }
+
+        /* 全方位アプローチ */
+        .all-audience-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            margin-bottom: 5rem;
+        }
+        @media (max-width: 960px) {
+            .intro-visual-section, .all-audience-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+        }
+        .audience-card {
+            background: var(--bg-card);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius);
+            padding: 2.8rem;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 10px 30px rgba(123, 77, 255, 0.04);
+        }
+        .audience-card h3 {
+            font-size: 1.35rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .audience-card h3 span { color: var(--pink-400); }
+        .audience-card h3 .cyan-tag { color: var(--cyan-400); }
+        .audience-card p {
+            font-size: 1.02rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Action CTA Banner */
+        .cta-banner {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(116, 69, 242, 0.05) 0%, rgba(0, 139, 229, 0.05) 100%);
+            border: 1px solid var(--bg-card-border);
+            border-radius: var(--radius);
+            padding: 3.5rem 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(123, 77, 255, 0.04);
+        }
+        .cta-banner h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+        .cta-banner p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--purple-500), var(--purple-400));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.05rem;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(116, 69, 242, 0.2);
+            transition: all var(--transition);
+        }
+        .cta-btn:hover {
+            box-shadow: 0 8px 30px rgba(116, 69, 242, 0.35);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        .lp-footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(123, 77, 255, 0.08);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* 3D Showcase Card Styles */
+        .showcase-container-3d {
+            perspective: 1000px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+            padding: 1rem 0;
+        }
+        .showcase-card-3d {
+            width: 100%;
+            max-width: 300px;
+            transform: rotateY(-12deg) rotateX(12deg);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1.5px solid rgba(123, 77, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.06);
+        }
+        .showcase-card-3d:hover {
+            transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+            border-color: var(--purple-500);
+            box-shadow: 0 20px 40px rgba(123, 77, 255, 0.15);
+        }
+        .showcase-img-3d {
+            width: 100%;
+            display: block;
+        }
+
+        /* 改行・読みやすさ対策 */
+        .nobr {
+            display: inline-block;
+            white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+            .nobr {
+                white-space: normal;
+            }
+        }
+        .text-lead {
+            word-break: normal;
+            overflow-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-bg"></div>
+
+    <div class="lp-container">
+        <!-- Navigation Header -->
+        <header class="nav-header">
+            <div class="nav-logo">
+                <i class="fa-brands fa-twitch" style="color: var(--purple-500);"></i>
+                <span>かんたんバッジメーカー LP</span>
+            </div>
+            <a href="index.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i> アプリに戻る
+            </a>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title text-lead">だれでも1分でわかる！<br>Twitchバッジのきほん</h1>
+            <p class="hero-desc text-lead">「そもそもバッジってなに？」という初めての方でも大丈夫！<br>バッジの魅力と、このサイトでの超かんたんな作り方を分かりやすくご紹介します。</p>
+        </section>
+
+        <!-- Concept Visual Section (1カラム縦並びレイアウト) -->
+        <section class="intro-visual-section">
+            <!-- 1時間目：バッジの本質 -->
+            <div class="intro-card">
+                <h3>
+                    <span style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                        <i class="fa-solid fa-crown" style="color:var(--purple-500);"></i>
+                        <span>チャット欄の主役を際立たせる、最強のステータス。</span>
+                        <span style="font-size: 1.1rem; font-weight: normal; color: var(--text-secondary);">【リスナーが思わず誇りたくなるバッジデザインを】</span>
+                    </span>
+                </h3>
+                <p class="intro-card-lead text-lead">
+                    サブスクバッジやビッツバッジは、配信者とリスナーの絆の証であり、<br>
+                    チャット欄で圧倒的な存在感を放つ特別な勲章です。
+                </p>
+                <p class="text-lead">
+                    グレーから、パープル、レッド、そして最高峰のゴールドへ。<br>
+                    進化するごとにリスナーの熱量と配信の歴史が刻まれていくからこそ、デザインには絶対に妥協したくないもの。<br><br>
+                    当サイトは、あなたのコミュニティのためだけに最適化された、<br>
+                    <strong>最高にエモくて視認性の高いネオンバッジを一瞬で生成します。</strong>
+                </p>
+                
+                <div class="evolution-row">
+                    <div class="evo-cell">
+                        <img src="images/evo_1.png" alt="1 Bit" class="evo-img">
+                        <span class="evo-lbl">最初はここから<br>(グレー)</span>
+                    </div>
+                    <i class="fa-solid fa-angle-right evo-arrow"></i>
+                    <div class="evo-cell">
+                        <img src="images/evo_100.png" alt="100 Bits" class="evo-img">
+                        <span class="evo-lbl">応援すると<br>(パープル)</span>
+                    </div>
+                    <i class="fa-solid fa-angle-right evo-arrow"></i>
+                    <div class="evo-cell">
+                        <img src="images/evo_10k.png" alt="10k Bits" class="evo-img">
+                        <span class="evo-lbl">さらに応援で<br>(レッド)</span>
+                    </div>
+                    <i class="fa-solid fa-angle-right evo-arrow"></i>
+                    <div class="evo-cell">
+                        <img src="images/evo_1m.png" alt="1M Bits" class="evo-img">
+                        <span class="evo-lbl">あこがれの<br>(ゴールド)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2時間目：3サイズ＝クッキリ綺麗に見せる絶対のルール -->
+            <div class="intro-card">
+                <h3>
+                    <span style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+                        <i class="fa-regular fa-image" style="color:var(--cyan-400);"></i>
+                        <span>Twitch公式基準：3サイズ（72px / 36px / 18px）の書き出しに、もう悩まない。</span>
+                        <span style="font-size: 1.1rem; font-weight: normal; color: var(--text-secondary);">【極小18pxでも、ネオンのきらめきを1ミリも殺さない技術】</span>
+                    </span>
+                </h3>
+                <p class="intro-card-lead text-lead">
+                    Twitchにバッジを登録する際、避けて通れないのが「3種類のサイズ（大・中・小）」の同時用意。<br>
+                    スマホの極小画面からPCの大画面まで、あらゆる解像度で綺麗に表示させるための必須ルールです。
+                </p>
+                <p class="text-lead">
+                    厄介なのは、普通のソフトで無理やり18pxに縮小すると、ドットのフチがにじんでしまい、<br>
+                    チャット欄で「何の絵か分からない潰れた塊」になってしまうこと。<br><br>
+                    当サイトの<strong>「等倍にじみ防止技術」</strong>なら、お気に入りのデザインをポンと置くだけ。<br>
+                    あらゆる解像度でクッキリ映える極上クオリティの3サイズを、<strong>たった1秒で一瞬で一括生成します。</strong>
+                </p>
+                
+                <div class="size-row">
+                    <div class="size-cell">
+                        <div class="size-wrap sz-72">
+                            <img src="images/cute_character_neon.png" alt="72px" class="char-img">
+                        </div>
+                        <span class="size-lbl">大 (パソコン用)</span>
+                    </div>
+                    <div class="size-cell">
+                        <div class="size-wrap sz-36">
+                            <img src="images/cute_character_neon.png" alt="36px" class="char-img">
+                        </div>
+                        <span class="size-lbl">中 (タブレット用)</span>
+                    </div>
+                    <div class="size-cell">
+                        <div class="size-wrap sz-18">
+                            <img src="images/cute_character_neon.png" alt="18px" class="char-img">
+                        </div>
+                        <span class="size-lbl">小 (スマホチャット用)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3ステップ解説 -->
+        <section class="step-showcase">
+            <div class="step-heading">
+                <h2>使い方は超かんたん！3つのステップ</h2>
+                <p class="text-lead">WEBツールを普段あまり使わない人でも、パッと見で安心できるシンプルな手順です。</p>
+            </div>
+
+            <div class="step-container">
+                <!-- Step 1 -->
+                <div class="step-block">
+                    <div class="step-meta-container">
+                        <span class="step-badge">STEP 1</span>
+                        <h3 class="step-title"><span class="nobr">画像を選ぶだけ！</span></h3>
+                    </div>
+                    
+                    <!-- 左カラム: ブラウザフレームと実際のスクショ画像 -->
+                    <div class="browser-mockup">
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <span class="browser-dot red"></span>
+                                <span class="browser-dot yellow"></span>
+                                <span class="browser-dot green"></span>
+                            </div>
+                            <div class="browser-url">https://badge-maker.local/<span>#image_select</span></div>
+                            <div style="width: 30px;"></div>
+                        </div>
+                        <div class="browser-screenshot-wrapper">
+                            <img src="images/screenshot_step1.png" alt="" onerror="this.style.display='none';">
+                            <div class="browser-screenshot-placeholder">
+                                <i class="fa-regular fa-image"></i>
+                                <strong>「screenshot_step1.png」を表示</strong>
+                                <span>自分で撮影したSTEP 1の操作画面スクショを<br><strong>images/screenshot_step1.png</strong>として保存してください。</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右カラム: 注目ポイント解説カード -->
+                    <div class="step-info-card">
+                        <h4><i class="fa-solid fa-heart" style="color: var(--pink-400);"></i> ポンと置くだけで自動読み込み</h4>
+                        <ul class="step-points-list">
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">お気に入りのイラストや写真をドラッグ＆ドロップするだけで、自動でエディタに表示されます。</span>
+                            </li>
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">もちろん、まっさらな状態から自分で1マスずつ塗る「ドット絵職人モード」で遊ぶこともできます！</span>
+                            </li>
+                        </ul>
+                        <div class="step-result-badge purple-theme">
+                            <i class="fa-regular fa-face-smile"></i> スマホ写真もイラストも全部対応！
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-block">
+                    <div class="step-meta-container">
+                        <span class="step-badge">STEP 2</span>
+                        <h3 class="step-title"><span class="nobr">光らせてためすだけ！</span></h3>
+                    </div>
+                    
+                    <!-- 左カラム: ブラウザフレームと実際のスクショ画像 -->
+                    <div class="browser-mockup">
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <span class="browser-dot red"></span>
+                                <span class="browser-dot yellow"></span>
+                                <span class="browser-dot green"></span>
+                            </div>
+                            <div class="browser-url">https://badge-maker.local/<span>#neon_glow</span></div>
+                            <div style="width: 30px;"></div>
+                        </div>
+                        <div class="browser-screenshot-wrapper">
+                            <img src="images/screenshot_step2.png" alt="" onerror="this.style.display='none';">
+                            <div class="browser-screenshot-placeholder">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <strong>「screenshot_step2.png」を表示</strong>
+                                <span>自分で撮影したSTEP 2の操作画面スクショを<br><strong>images/screenshot_step2.png</strong>として保存してください.</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右カラム: 注目ポイント解説カード -->
+                    <div class="step-info-card">
+                        <h4><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--purple-500);"></i> スライダーで可愛くデコレーション</h4>
+                        <ul class="step-points-list">
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">スライダーを左右に動かすだけで、画像のフチがピカッと綺麗にネオン発光します。</span>
+                            </li>
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">Twitchのチャット欄（黒い画面・白い画面）を再現した画面で、どう見えるかをその場でお手軽にテストできます。</span>
+                            </li>
+                        </ul>
+                        <div class="step-result-badge">
+                            <i class="fa-solid fa-eye"></i> 事前に見え方がわかるから安心！
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-block">
+                    <div class="step-meta-container">
+                        <span class="step-badge">STEP 3</span>
+                        <h3 class="step-title"><span class="nobr">ボタンを押すだけ！</span></h3>
+                    </div>
+                    
+                    <!-- 左カラム: ブラウザフレームと実際のスクショ画像 -->
+                    <div class="browser-mockup">
+                        <div class="browser-bar">
+                            <div class="browser-dots">
+                                <span class="browser-dot red"></span>
+                                <span class="browser-dot yellow"></span>
+                                <span class="browser-dot green"></span>
+                            </div>
+                            <div class="browser-url">https://badge-maker.local/<span>#download</span></div>
+                            <div style="width: 30px;"></div>
+                        </div>
+                        <div class="browser-screenshot-wrapper">
+                            <img src="images/screenshot_step3.png" alt="" onerror="this.style.display='none';">
+                            <div class="browser-screenshot-placeholder">
+                                <i class="fa-regular fa-file-zip"></i>
+                                <strong>「screenshot_step3.png」を表示</strong>
+                                <span>自分で撮影したSTEP 3の操作画面スクショを<br><strong>images/screenshot_step3.png</strong>として保存してください。</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 右カラム: 注目ポイント解説カード -->
+                    <div class="step-info-card">
+                        <h4><i class="fa-regular fa-images" style="color: var(--green-400);"></i> 面倒なサイズ変更はゼロ！</h4>
+                        <ul class="step-points-list">
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">ダウンロードボタンを押すだけで、Twitchに登録するための3つのサイズが全部まとまったZIPファイルが保存されます。</span>
+                            </li>
+                            <li class="step-point-item">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="text-lead">ダウンロードされたZIPファイルを解凍して、そのままTwitchに登録するだけでバッジが設定完了します！</span>
+                            </li>
+                        </ul>
+                        <div class="step-result-badge green-theme">
+                            <i class="fa-solid fa-check-double"></i> 登録にそのまま使える画像が一発で完成！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ◯✕比較表セクション -->
+        <section class="comparison-section">
+            <h2>他のアプリと何が違うの？</h2>
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>機能・特徴</th>
+                            <th>他の一般的な画像アプリ</th>
+                            <th>当サイト (かんたんバッジメーカー)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>等倍にじみ防止 (クッキリ綺麗)</strong></td>
+                            <td>❌ (ぼやけてにじんでしまう)</td>
+                            <td>🌟 〇 (一番小さいサイズでもクッキリ可愛い)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>自動でフチをネオン発光</strong></td>
+                            <td>❌ (手動で光らせるのは凄く大変)</td>
+                            <td>🌟 〇 (スライダーを動かすだけで綺麗に光る)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>公式Bits進化カラー一括生成</strong></td>
+                            <td>❌ (1枚ずつ色を変える不毛な作業)</td>
+                            <td>🌟 〇 (1クリックで全色まとめて一括保存)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>チャット欄テストシミュレータ</strong></td>
+                            <td>❌ (登録するまで見え方がわからない)</td>
+                            <td>🌟 〇 (黒・白のチャット画面で事前テスト可能)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 全方位アプローチセクション -->
+        <section class="all-audience-grid">
+            <!-- 配信を見ない人・絵を描く人へ -->
+            <div class="audience-card">
+                <h3><i class="fa-solid fa-palette" style="color:var(--pink-400);"></i> 配信を見ない人・絵師さんへ</h3>
+                <p class="text-lead">SNS（XやDiscordなど）の通知欄でも絶対に潰れない、18px規格で作る「超クッキリ可愛いアイコン」が作れます。アクリルキーホルダーなどのオリジナルグッズのフチを綺麗に光らせる原案用としても大活躍！</p>
+                <div class="size-row" style="background:rgba(230, 69, 102, 0.03); margin-top:auto; border: 1px solid rgba(230, 69, 102, 0.08); gap: 1.5rem;">
+                    <div class="size-cell">
+                        <img src="images/cute_character.png" alt="Before Icon" style="width:48px; height:48px; border-radius:6px; border:1px solid rgba(0,0,0,0.08);">
+                        <span class="size-lbl">元画像 (にじみやすい)</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right" style="color:var(--pink-400);"></i>
+                    <div class="size-cell">
+                        <img src="images/cute_character_neon.png" alt="After Icon" style="width:48px; height:48px; border-radius:6px; border:1.5px solid var(--pink-400); box-shadow:none; filter:none;">
+                        <span class="size-lbl" style="color:var(--pink-400);">クッキリ可愛いネオン</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 配信者・配信予定の人へ -->
+            <div class="audience-card">
+                <h3><i class="fa-solid fa-rocket" style="color:var(--cyan-400);"></i> これから配信を始める方へ</h3>
+                <p class="text-lead">通常、外注すると数千円かかる「バッジ3サイズ」と「チャンネルポイント用3サイズ」の合計6枚のお揃いアイコンセットが、完全無料で同時に手に入ります！初期コストをゼロにして、すぐに配信をスタートできます！</p>
+                <div class="showcase-container-3d">
+                    <div class="showcase-card-3d">
+                        <img src="images/bundle_badges.png" alt="Badges Bundle Showcase" class="showcase-img-3d">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="lp-footer">
+            <p>&copy; 2026 Twitch Neon Badge Maker PRO | だれでもわかる簡単バッジ制作ガイド</p>
+        </footer>
+    </div>
+</body>
+</html>

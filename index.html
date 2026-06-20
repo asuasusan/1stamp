@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Twitchの規定サイズ（18x18, 36x36, 72x72）に対応した、装飾パーツ付きネオンGlowバッジ自作ツール。全18種の公式Bitsカラープリセット搭載。">
+    <title>いちスタ Free | 無料で1秒Twitchバッジ作成</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Oxanium:wght@400;600;800&family=Plus+Jakarta+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="app.js" defer></script>
+    <!-- 高品質なカスタムネオンビッツSVGファビコン (v5) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230D0E15'/><text x='25' y='76' font-family='Oxanium, sans-serif' font-weight='800' font-size='72' fill='%23FFFFFF' filter='drop-shadow(0 0 4px rgba(0,243,255,0.6))'>1</text><path d='M72 16 l 4 8 l 8 2 l -6 6 l 2 8 l -8 -4 l -8 4 l 2 -8 l -6 -6 l 8 -2 Z' fill='%23FF007F' filter='drop-shadow(0 0 5px %23FF007F)'/></svg>">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <header class="app-header">
+        <!-- テーマ切り替えボタン (ライト/ダーク) -->
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="テーマ切り替え">
+            <i class="fa-solid fa-sun icon-sun"></i>
+            <i class="fa-solid fa-moon icon-moon"></i>
+        </button>
+        <div class="logo">
+            <div class="logo-mark">
+                <span class="logo-num">1</span>
+                <i class="fa-solid fa-star logo-star"></i>
+            </div>
+            <h1>いちスタ <span class="accent-text">FREE</span></h1>
+        </div>
+        <p class="subtitle">全18種の公式Bitsカラープリセット、装飾パーツの独立着色、完璧なドロップシャドウ</p>
+        <a href="guide.html" class="beginner-guide-trigger-neon">
+            <i class="fa-solid fa-rocket"></i> 🔰 配信未経験の方からプロ配信者まで：他のアプリと何が違う？大画面画像でわかる超カンタン特化ガイド
+        </a>
+    </header>
+
+    <!-- 使い方ガイドエリア (v7.5) -->
+    <section class="guide-container">
+        <details class="neon-accordion guide-accordion">
+            <summary class="accordion-header">
+                <span class="header-title"><i class="fa-solid fa-circle-question icon-cyan"></i> クイックスタートガイド (クリックで開閉)</span>
+                <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </summary>
+            <div class="accordion-content">
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <div class="step-num">1</div>
+                        <h4>素材の準備・自作</h4>
+                        <p>透過画像をアップロードするか、72x72グリッド等のペイントでドット絵を描きます。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">2</div>
+                        <h4>エフェクト調整</h4>
+                        <p>Fit Scaleでのサイズや位置の調整、輪郭ネオンやドロップシャドウを好みの色と強さに調整します。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">3</div>
+                        <h4>書き出し</h4>
+                        <p>バッジ用、またはチャンネルポイント用(112px/56px/28px)の一括ダウンロードZIPを実行します。</p>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">4</div>
+                        <h4>宣伝・共有</h4>
+                        <p>「ギャラリーに公開」であなたの作品を投稿し、他の配信者に配布したりTwitch配信チャンネルを宣伝しましょう！</p>
+                    </div>
+                </div>
+            </div>
+        </details>
+    </section>
+
+    <main class="app-container">
+        <section class="control-panel">
+
+            <!-- アコーディオン1: 画像入力 / 自作ペイント -->
+            <details class="neon-accordion" open>
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-cloud-arrow-up icon-purple"></i> 1. 画像入力 / 自作ペイント</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <!-- タブ切り替えUI -->
+                    <div class="input-tabs">
+                        <button type="button" class="input-tab-btn active" id="tab-upload-btn"><i class="fa-solid fa-upload"></i> スマート画像アップロード</button>
+                        <button type="button" class="input-tab-btn" id="tab-paint-btn"><i class="fa-solid fa-paint-brush"></i> ピクセルアート作成</button>
+                    </div>
+
+                    <!-- アップロード側パネル -->
+                    <div class="tab-panel active" id="panel-upload">
+                        <div class="drop-zone-wrapper" id="drop-zone">
+                            <input type="file" id="file-input" accept="image/*" class="file-input-hidden">
+                            <div class="upload-content">
+                                <div class="icon-wrap">
+                                    <i class="fa-solid fa-image upload-icon"></i>
+                                </div>
+                                <h3>画像をドラッグ＆ドロップ</h3>
+                                <p>または <span class="browse-btn">ファイルを選択</span></p>
+                                <span class="file-tip">推奨: 透過背景の正方形画像</span>
+                            </div>
+                            <div class="file-info-bar id-hidden" id="file-info">
+                                <i class="fa-solid fa-circle-check text-success"></i>
+                                <span id="file-name">filename.png</span>
+                                <button type="button" id="remove-file-btn" class="btn-icon" title="画像を削除">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ペイントエディタパネル -->
+                    <div class="tab-panel id-hidden" id="panel-paint">
+                        <div class="paint-editor-container">
+                            <div class="paint-canvas-wrapper">
+                                <canvas id="paint-canvas" width="288" height="288"></canvas>
+                            </div>
+                            
+                            <div class="paint-controls">
+                                <div class="paint-tools">
+                                    <button type="button" class="paint-tool-btn active" id="tool-pencil" title="鉛筆 (Pencil)"><i class="fa-solid fa-pencil"></i></button>
+                                    <button type="button" class="paint-tool-btn" id="tool-eraser" title="消しゴム (Eraser)"><i class="fa-solid fa-eraser"></i></button>
+                                    <button type="button" class="paint-tool-btn" id="tool-bucket" title="塗りつぶし (Bucket)"><i class="fa-solid fa-fill-drip"></i></button>
+                                    <button type="button" class="paint-tool-btn" id="tool-paint-undo" title="一つ前に戻る (Undo)" style="border-color: rgba(0, 240, 255, 0.3);" disabled><i class="fa-solid fa-rotate-left"></i></button>
+                                    <button type="button" class="paint-tool-btn danger" id="tool-clear" title="全消去 (Clear)"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                                
+                                <div class="paint-grid-size">
+                                    <label class="control-label">グリッドサイズ</label>
+                                    <div class="grid-options">
+                                        <label class="radio-label"><input type="radio" name="paint-grid-size" value="18" checked> 18x18</label>
+                                        <label class="radio-label"><input type="radio" name="paint-grid-size" value="36"> 36x36</label>
+                                        <label class="radio-label"><input type="radio" name="paint-grid-size" value="72"> 72x72 (高精細・元画像劣化なし)</label>
+                                    </div>
+                                </div>
+
+                                <div class="paint-color-selector">
+                                    <label class="control-label">カラーパレット</label>
+                                    <div class="paint-palette">
+                                        <button type="button" class="palette-color active" style="background:#ffffff;" data-color="#ffffff"></button>
+                                        <button type="button" class="palette-color" style="background:#000000;" data-color="#000000"></button>
+                                        <button type="button" class="palette-color" style="background:#888888;" data-color="#888888" title="1 Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#8F54F2;" data-color="#8F54F2" title="100 Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#009473;" data-color="#009473" title="1k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#006AB3;" data-color="#006AB3" title="5k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#E92323;" data-color="#E92323" title="10k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#E0428D;" data-color="#E0428D" title="25k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#D47500;" data-color="#D47500" title="50k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#00B22A;" data-color="#00B22A" title="75k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#FFB300;" data-color="#FFB300" title="100k Bit"></button>
+                                        <button type="button" class="palette-color" style="background:#FFD93B;" data-color="#FFD93B" title="1M Bit"></button>
+                                        <div class="custom-color-picker-wrap">
+                                            <input type="color" id="paint-custom-color" value="#ff3366">
+                                            <button type="button" class="palette-color custom-trigger" id="paint-custom-color-btn"><i class="fa-solid fa-palette"></i></button>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </details>
+
+            <!-- アコーディオン2: 公式Bits配色プリセット -->
+            <details class="neon-accordion disabled-accordion" id="acc-presets">
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-wand-magic-sparkles icon-yellow"></i> 2. 公式Bits配色プリセット</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <p class="section-desc">バッジ画像の背面に<strong>ネオン発光グロー</strong>として適用します。輪郭ネオンの色は変わらず、背景のオーラ成分のみを切り替えます。「背景ネオン」トグルでON/OFFできます。</p>
+ 
+                    <!-- エフェクトなし -->
+                    <div class="preset-grid" style="margin-bottom: 1rem; grid-template-columns: 1fr;">
+                        <button type="button" class="preset-btn effect-none-btn" id="btn-effect-none" style="grid-column: 1 / -1; justify-content: center; height: 42px; font-weight: 800; border: 2px dashed rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #fff;">
+                            <i class="fa-solid fa-ban" style="color: #ff4a4a; margin-right: 8px;"></i> 【エフェクトなし】シンプルリサイズ
+                        </button>
+                    </div>
+
+                    <!-- 通常バッジ -->
+                    <div class="preset-section-title">通常バッジ (1 〜 100,000 Bit)</div>
+                    <div class="preset-grid">
+                        <button type="button" class="preset-btn bits-1-btn" data-preset="bits-1">
+                            <span class="preset-preview" style="background:#666666;box-shadow:0 0 6px #666666;"></span> 1 Bit <span class="preset-lbl">(グレー)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-100-btn" data-preset="bits-100">
+                            <span class="preset-preview" style="background:#8F54F2;box-shadow:0 0 6px #8F54F2;"></span> 100 Bit <span class="preset-lbl">(パープル)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-1000-btn" data-preset="bits-1000">
+                            <span class="preset-preview" style="background:#009473;box-shadow:0 0 6px #009473;"></span> 1,000 Bit <span class="preset-lbl">(ティール)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-5000-btn" data-preset="bits-5000">
+                            <span class="preset-preview" style="background:#006AB3;box-shadow:0 0 6px #006AB3;"></span> 5,000 Bit <span class="preset-lbl">(ブルー)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-10000-btn" data-preset="bits-10000">
+                            <span class="preset-preview" style="background:#E92323;box-shadow:0 0 6px #E92323;"></span> 10,000 Bit <span class="preset-lbl">(レッド)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-25000-btn" data-preset="bits-25000">
+                            <span class="preset-preview" style="background:#E0428D;box-shadow:0 0 6px #E0428D;"></span> 25,000 Bit <span class="preset-lbl">(ピンク)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-50000-btn" data-preset="bits-50000">
+                            <span class="preset-preview" style="background:#D47500;box-shadow:0 0 6px #D47500;"></span> 50,000 Bit <span class="preset-lbl">(オレンジ)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-75000-btn" data-preset="bits-75000">
+                            <span class="preset-preview" style="background:#00B22A;box-shadow:0 0 6px #00B22A;"></span> 75,000 Bit <span class="preset-lbl">(グリーン)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-100000-btn" data-preset="bits-100000" style="grid-column: span 2;">
+                            <span class="preset-preview" style="background:#FFB300;box-shadow:0 0 6px #FFB300;"></span> 100,000 Bit <span class="preset-lbl">(イエロー)</span>
+                        </button>
+                    </div>
+
+                    <!-- 高額バッジ -->
+                    <div class="preset-section-title" style="margin-top:1.2rem;">高額バッジ (200,000 〜 1,000,000 Bit) <span class="preset-lbl" style="font-size:0.7rem;">背景: #3E3260</span></div>
+                    <div class="preset-grid">
+                        <button type="button" class="preset-btn bits-200000-btn" data-preset="bits-200000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#A1A1A1);box-shadow:0 0 6px #A1A1A1;"></span> 200k Bit <span class="preset-lbl">(グレー)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-300000-btn" data-preset="bits-300000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#D67AFF);box-shadow:0 0 6px #D67AFF;"></span> 300k Bit <span class="preset-lbl">(パープル)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-400000-btn" data-preset="bits-400000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#00D1A1);box-shadow:0 0 6px #00D1A1;"></span> 400k Bit <span class="preset-lbl">(ティール)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-500000-btn" data-preset="bits-500000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#36A7FF);box-shadow:0 0 6px #36A7FF;"></span> 500k Bit <span class="preset-lbl">(ブルー)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-600000-btn" data-preset="bits-600000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#FF3B3B);box-shadow:0 0 6px #FF3B3B;"></span> 600k Bit <span class="preset-lbl">(レッド)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-700000-btn" data-preset="bits-700000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#FF5C9D);box-shadow:0 0 6px #FF5C9D;"></span> 700k Bit <span class="preset-lbl">(ピンク)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-800000-btn" data-preset="bits-800000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#FF8A00);box-shadow:0 0 6px #FF8A00;"></span> 800k Bit <span class="preset-lbl">(オレンジ)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-900000-btn" data-preset="bits-900000">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#26FF58);box-shadow:0 0 6px #26FF58;"></span> 900k Bit <span class="preset-lbl">(グリーン)</span>
+                        </button>
+                        <button type="button" class="preset-btn bits-1000000-btn" data-preset="bits-1000000" style="grid-column: span 2;">
+                            <span class="preset-preview" style="background:linear-gradient(135deg,#3E3260,#FFD93B);box-shadow:0 0 6px #FFD93B;"></span> 1,000,000 Bit <span class="preset-lbl">(ゴールド)</span>
+                        </button>
+                    </div>
+                    
+                </div>
+            </details>
+
+            <!-- アコーディオン3: 装飾パーツレイヤー -->
+            <details class="neon-accordion disabled-accordion" id="acc-decorations">
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-crown icon-blue"></i> 3. 装飾パーツレイヤー</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <p class="section-desc">バッジの上下に王冠や公式バッジ枠などのパーツを追加できます。</p>
+                    
+                    <div class="control-group">
+                        <label class="control-label">装飾パーツを選択 (計12種)</label>
+                        <div class="decor-presets">
+                            <button type="button" class="decor-btn active" data-decor="none">なし</button>
+                            <button type="button" class="decor-btn" data-decor="crown" title="王冠"><i class="fa-solid fa-crown"></i></button>
+                            <button type="button" class="decor-btn" data-decor="star" title="星"><i class="fa-solid fa-star"></i></button>
+                            <button type="button" class="decor-btn" data-decor="fire" title="炎"><i class="fa-solid fa-fire"></i></button>
+                            <button type="button" class="decor-btn" data-decor="heart" title="ハート"><i class="fa-solid fa-heart"></i></button>
+                            <button type="button" class="decor-btn" data-decor="diamond" title="ダイヤ"><i class="fa-solid fa-gem"></i></button>
+                            <button type="button" class="decor-btn" data-decor="shield" title="盾"><i class="fa-solid fa-shield-halved"></i></button>
+                            <button type="button" class="decor-btn text-icon" data-decor="triangle" title="三角形 (1 Bit枠)">▲</button>
+                            <button type="button" class="decor-btn text-icon" data-decor="rhombus" title="ひし形 (100 Bit枠)">◆</button>
+                            <button type="button" class="decor-btn text-icon" data-decor="pentagon" title="五角形 (1,000 Bit枠)">⬠</button>
+                            <button type="button" class="decor-btn text-icon" data-decor="hexagon" title="六角形 (5,000 Bit枠)">⬡</button>
+                            <button type="button" class="decor-btn text-icon" data-decor="star8" title="8角星 (10,000 Bit枠)">✴</button>
+                            <button type="button" class="decor-btn" data-decor="wings" title="翼"><i class="fa-solid fa-feather"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="decor-adjustments id-hidden" id="decor-controls">
+                        <div class="control-row">
+                            <div class="control-group">
+                                <label class="control-label">重ね順</label>
+                                <div class="radio-group">
+                                    <label class="radio-label"><input type="radio" name="decor-depth" value="front" checked> 画像前面</label>
+                                    <label class="radio-label"><input type="radio" name="decor-depth" value="back"> 画像背面</label>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="label-with-value">
+                                    <label for="decor-scale" class="control-label">サイズ</label>
+                                    <span class="value-display" id="decor-scale-val">40%</span>
+                                </div>
+                                <input type="range" id="decor-scale" min="10" max="100" value="40" class="neon-slider">
+                            </div>
+                        </div>
+
+                        <div class="control-row">
+                            <div class="control-group">
+                                <div class="label-with-value">
+                                    <label for="decor-x" class="control-label">位置 X (左右)</label>
+                                    <span class="value-display" id="decor-x-val">0</span>
+                                </div>
+                                <input type="range" id="decor-x" min="-50" max="50" value="0" class="neon-slider">
+                            </div>
+                            <div class="control-group">
+                                <div class="label-with-value">
+                                    <label for="decor-y" class="control-label">位置 Y (上下)</label>
+                                    <span class="value-display" id="decor-y-val">-35</span>
+                                </div>
+                                <input type="range" id="decor-y" min="-50" max="50" value="-35" class="neon-slider">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="label-with-value">
+                                <label for="decor-rotate" class="control-label">回転角度</label>
+                                <span class="value-display" id="decor-rotate-val">0°</span>
+                            </div>
+                            <input type="range" id="decor-rotate" min="-180" max="180" value="0" class="neon-slider">
+                        </div>
+
+                        <hr class="panel-divider-sub">
+
+                        <div class="control-group">
+                            <label class="control-label">装飾パーツの着色モード</label>
+                            <div class="radio-group flex-wrap">
+                                <label class="radio-label"><input type="radio" name="decor-color-mode" value="sync" checked> Glowと同期</label>
+                                <label class="radio-label"><input type="radio" name="decor-color-mode" value="single"> 単色</label>
+                                <label class="radio-label"><input type="radio" name="decor-color-mode" value="gradient"> グラデーション</label>
+                                <label class="radio-label"><input type="radio" name="decor-color-mode" value="metallic"> メタリック</label>
+                            </div>
+                        </div>
+
+                        <div class="decor-color-panel id-hidden" id="decor-single-color-panel">
+                            <div class="control-group">
+                                <label class="control-label" for="decor-color">装飾パーツ専用カラー</label>
+                                <div class="color-picker-input-wrap">
+                                    <input type="color" id="decor-color" value="#ffffff">
+                                    <span class="picker-value-text" id="decor-color-text">#ffffff</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decor-color-panel id-hidden" id="decor-gradient-color-panel">
+                            <div class="control-row">
+                                <div class="control-group">
+                                    <label class="control-label" for="decor-grad1">開始色</label>
+                                    <div class="color-picker-input-wrap">
+                                        <input type="color" id="decor-grad1" value="#ffe066">
+                                        <span class="picker-value-text" id="decor-grad1-text">#ffe066</span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="decor-grad2">終了色</label>
+                                    <div class="color-picker-input-wrap">
+                                        <input type="color" id="decor-grad2" value="#f5af19">
+                                        <span class="picker-value-text" id="decor-grad2-text">#f5af19</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group" style="margin-top: 0.5rem;">
+                                <label class="control-label">グラデーションの形</label>
+                                <div class="radio-group">
+                                    <label class="radio-label"><input type="radio" name="decor-grad-type" value="linear" checked> 線形</label>
+                                    <label class="radio-label"><input type="radio" name="decor-grad-type" value="radial"> 円形</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="decor-color-panel id-hidden" id="decor-metallic-panel">
+                            <label class="control-label">金属の種類</label>
+                            <div class="metal-presets">
+                                <button type="button" class="metal-btn active" data-metal="gold" style="--metal-color: #ffd700;">ゴールド</button>
+                                <button type="button" class="metal-btn" data-metal="silver" style="--metal-color: #e0e0e0;">シルバー</button>
+                                <button type="button" class="metal-btn" data-metal="bronze" style="--metal-color: #cd7f32;">ブロンズ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- アコーディオン4: 輪郭ネオン & グラデーション -->
+            <details class="neon-accordion disabled-accordion" id="acc-neon">
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-circle-half-stroke icon-purple"></i> 4. 輪郭ネオン設定</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <!-- ネオン効果有効化トグル -->
+                    <div class="control-group" style="margin-bottom: 1.2rem; background: rgba(255,255,255,0.03); padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="label-with-value">
+                            <label for="neon-effect-toggle" class="control-label" style="font-weight: 800; color: #fff;">ネオン効果 (Glowエフェクト)</label>
+                            <span class="value-display" id="neon-effect-val" style="color: #39ff14; font-weight: 800;">ON</span>
+                        </div>
+                        <div class="toggle-switch-wrapper" style="margin-top: 0.4rem;">
+                            <span class="toggle-label" style="font-size: 0.75rem;">ネオン発光とアウトラインを有効にする</span>
+                            <label class="switch">
+                                <input type="checkbox" id="neon-effect-toggle" checked>
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="neon-controls-wrapper">
+                        <div class="control-group">
+                            <label class="control-label">カラーモード</label>
+                            <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="color-mode" value="single" checked> 単色</label>
+                            <label class="radio-label"><input type="radio" name="color-mode" value="gradient"> グラデーション</label>
+                        </div>
+                    </div>
+
+                    <div class="color-presets-wrapper" id="single-color-panel">
+                        <label class="control-label">ネオンカラー選択</label>
+                        <div class="color-presets">
+                            <button type="button" class="color-btn active" data-color="#ff3366" style="--btn-color: #ff3366;" title="レッド"><span class="color-dot"></span></button>
+                            <button type="button" class="color-btn" data-color="#00f0ff" style="--btn-color: #00f0ff;" title="シアン"><span class="color-dot"></span></button>
+                            <button type="button" class="color-btn" data-color="#b026ff" style="--btn-color: #b026ff;" title="パープル"><span class="color-dot"></span></button>
+                            <button type="button" class="color-btn" data-color="#39ff14" style="--btn-color: #39ff14;" title="グリーン"><span class="color-dot"></span></button>
+                            <button type="button" class="color-btn" data-color="#fffb00" style="--btn-color: #fffb00;" title="イエロー"><span class="color-dot"></span></button>
+                            <div class="custom-color-picker-wrap">
+                                <input type="color" id="custom-color" value="#ff3366" title="カスタムカラー">
+                                <button type="button" class="color-btn custom-trigger" id="custom-color-btn"><i class="fa-solid fa-palette"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gradient-panel id-hidden" id="gradient-color-panel">
+                        <div class="control-row">
+                            <div class="control-group">
+                                <label class="control-label" for="grad-color1">開始色</label>
+                                <div class="color-picker-input-wrap">
+                                    <input type="color" id="grad-color1" value="#ff007f">
+                                    <span class="picker-value-text" id="grad-color1-text">#ff007f</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="grad-color2">終了色</label>
+                                <div class="color-picker-input-wrap">
+                                    <input type="color" id="grad-color2" value="#00f0ff">
+                                    <span class="picker-value-text" id="grad-color2-text">#00f0ff</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group" style="margin-top: 0.8rem;">
+                            <label class="control-label">グラデーションの形</label>
+                            <div class="radio-group">
+                                <label class="radio-label"><input type="radio" name="grad-type" value="linear" checked> 線形 (Linear)</label>
+                                <label class="radio-label"><input type="radio" name="grad-type" value="radial"> 円形 (Radial)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="panel-divider">
+
+                    <div class="control-group">
+                        <div class="label-with-value">
+                            <label for="glow-blur" class="control-label">光の広がり (Glow Size)</label>
+                            <span class="value-display" id="glow-blur-val">8px</span>
+                        </div>
+                        <input type="range" id="glow-blur" min="1" max="25" value="8" step="1" class="neon-slider">
+                    </div>
+
+                    <div class="control-group">
+  <div class="label-with-value">
+    <label for="glow-intensity" class="control-label">光の強さ (Intensity)</label>
+    <span class="value-display" id="glow-intensity-val">3</span>
+  </div>
+  <input type="range" id="glow-intensity" min="1" max="6" value="3" step="1" class="neon-slider">
+</div>
+<div class="control-group">
+  <div class="label-with-value">
+    <label for="bg-preset-toggle" class="control-label">背景ネオン (使用/なし)</label>
+    <span class="value-display" id="bg-preset-val">OFF</span>
+  </div>
+  <div class="toggle-switch-wrapper">
+    <span class="toggle-label">背景ネオンを有効にする</span>
+    <label class="switch">
+      <input type="checkbox" id="bg-preset-toggle">
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+</div>
+                    </div> <!-- neon-controls-wrapper 閉じ -->
+                </div>
+            </details>
+
+            <!-- アコーディオン5: ドロップシャドウ -->
+            <details class="neon-accordion disabled-accordion" id="acc-shadow">
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-umbrella icon-cyan"></i> 5. ドロップシャドウ設定</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <p class="section-desc">ネオンGlowの背後にドロップシャドウを配置し、視認性を高めます。</p>
+
+                    <div class="control-group">
+                        <div class="label-with-value">
+                            <label for="shadow-opacity" class="control-label">影の不透明度</label>
+                            <span class="value-display" id="shadow-opacity-val">0.4</span>
+                        </div>
+                        <input type="range" id="shadow-opacity" min="0" max="1" value="0.4" step="0.1" class="neon-slider">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="label-with-value">
+                            <label for="shadow-blur" class="control-label">影のぼかし量</label>
+                            <span class="value-display" id="shadow-blur-val">4px</span>
+                        </div>
+                        <input type="range" id="shadow-blur" min="0" max="15" value="4" step="1" class="neon-slider">
+                    </div>
+
+                    <div class="control-row">
+                      <p class="section-desc">ネオンや影がキャンバスの端で途切れるのを防ぎます。</p>
+                        <div class="control-group">
+                            <div class="label-with-value">
+                                <label for="shadow-offset-x" class="control-label">位置 X</label>
+                                <span class="value-display" id="shadow-offset-x-val">0</span>
+                            </div>
+                            <input type="range" id="shadow-offset-x" min="-10" max="10" value="0" class="neon-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="label-with-value">
+                                <label for="shadow-offset-y" class="control-label">位置 Y</label>
+                                <span class="value-display" id="shadow-offset-y-val">2</span>
+                            </div>
+                            <input type="range" id="shadow-offset-y" min="-10" max="10" value="2" class="neon-slider">
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- アコーディオン6: 視認性設定 -->
+            <details class="neon-accordion disabled-accordion" id="acc-filters">
+                <summary class="accordion-header">
+                    <span class="header-title"><i class="fa-solid fa-filter icon-green"></i> 6. 視認性設定</span>
+                    <i class="fa-solid fa-chevron-down arrow-icon"></i>
+                </summary>
+                <div class="accordion-content">
+                    <div class="control-group">
+                        <div class="label-with-value">
+                            <label for="img-scale" class="control-label">画像スケール (Fit Scale)</label>
+                            <span class="value-display" id="img-scale-val">90%</span>
+                        </div>
+                        <span class="slider-hint">※画像サイズや拡大・縮小率を調整します。</span>
+                        <input type="range" id="img-scale" min="50" max="200" value="90" step="5" class="neon-slider">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-group">
+                            <div class="label-with-value">
+                                <label for="img-x" class="control-label">画像位置 X (左右)</label>
+                                <span class="value-display" id="img-x-val">0</span>
+                            </div>
+                            <input type="range" id="img-x" min="-50" max="50" value="0" class="neon-slider">
+                        </div>
+                        <div class="control-group">
+                            <div class="label-with-value">
+                                <label for="img-y" class="control-label">画像位置 Y (上下)</label>
+                                <span class="value-display" id="img-y-val">0</span>
+                            </div>
+                            <input type="range" id="img-y" min="-50" max="50" value="0" class="neon-slider">
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+        </section>
+
+        <!-- 右カラム: プレビュー & ダウンロード -->
+        <section class="preview-panel">
+            <div class="card preview-card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-eye"></i> バッジプレビュー</h2>
+                    <div class="preview-bg-toggle">
+                        <button type="button" class="bg-toggle-btn active" data-bg="transparent" title="透過背景"><i class="fa-solid fa-border-none"></i></button>
+                        <button type="button" class="bg-toggle-btn" data-bg="dark" title="ダーク背景"><i class="fa-solid fa-moon"></i></button>
+                        <button type="button" class="bg-toggle-btn" data-bg="light" title="ライト背景"><i class="fa-solid fa-sun"></i></button>
+                    </div>
+                </div>
+
+                <div class="badge-sizes-container">
+                    <div class="badge-box">
+                        <div class="badge-canvas-wrapper transparent-grid" id="bg-72" style="position: relative;">
+                            <canvas id="canvas-72" width="72" height="72" style="cursor: grab;"></canvas>
+                        </div>
+                        <span class="badge-label">72 × 72 px <span class="badge-sublabel">(大・ドラッグで画像やパーツを移動)</span></span>
+                    </div>
+                    <div class="badge-box">
+                        <div class="badge-canvas-wrapper transparent-grid" id="bg-36">
+                            <canvas id="canvas-36" width="36" height="36"></canvas>
+                        </div>
+                        <span class="badge-label">36 × 36 px <span class="badge-sublabel">(中・拡大表示)</span></span>
+                    </div>
+                    <div class="badge-box">
+                        <div class="badge-canvas-wrapper transparent-grid" id="bg-18">
+                            <canvas id="canvas-18" width="18" height="18"></canvas>
+                        </div>
+                        <span class="badge-label">18 × 18 px <span class="badge-sublabel">(小・拡大表示)</span></span>
+                    </div>
+                </div>
+
+                <div class="actual-size-bar">
+                    <div class="actual-size-inner">
+                        <span class="actual-size-title"><i class="fa-solid fa-expand"></i> 18px実寸等倍表示:</span>
+                        <div class="actual-badge-box transparent-grid" id="actual-18-bg">
+                            <div class="badge-placeholder-18" id="actual-18-dest"></div>
+                        </div>
+                        <span class="actual-size-desc">小さくても輪郭や装飾が崩れていないか確認できます。</span>
+                    </div>
+                </div>
+
+                <div class="chat-simulator-card">
+                    <h3><i class="fa-solid fa-comments"></i> チャット表示シミュレーター</h3>
+                    <div class="chat-toggle-tabs">
+                        <button type="button" class="chat-tab-btn active" data-chat-theme="dark">ダークモードチャット</button>
+                        <button type="button" class="chat-tab-btn" data-chat-theme="light">ライトモードチャット</button>
+                    </div>
+                    <div class="chat-box chat-dark" id="chat-simulation-area">
+                        <div class="chat-line">
+                            <span class="badge-placeholder-18" id="chat-badge-dest-1"></span>
+                            <span class="chat-user user-color-1">NeonStreamer</span>
+                            <span class="chat-colon">:</span>
+                            <span class="chat-message">これが実際のチャット欄での等倍表示イメージです！</span>
+                        </div>
+                        <div class="chat-line">
+                            <span class="badge-placeholder-18" id="chat-badge-dest-2"></span>
+                            <span class="chat-user user-color-2">GlowFan_01</span>
+                            <span class="chat-colon">:</span>
+                            <span class="chat-message">公式カラーのプリセットでBitsランク感が出ますね！🎉</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="action-area" style="display: flex; flex-direction: column; gap: 0.8rem;">
+                    <button type="button" id="download-btn" class="btn btn-primary btn-disabled" disabled>
+                        <i class="fa-solid fa-file-zipper"></i> バッジ用3サイズ一括DL (.zip)
+                    </button>
+                    
+                    <button type="button" id="download-channel-points-btn" class="btn btn-secondary btn-disabled" disabled style="background: linear-gradient(135deg, #00f0ff, #006ab3); color: #fff; box-shadow: 0 4px 18px rgba(0, 240, 255, 0.25);">
+                        <i class="fa-solid fa-coins"></i> チャンネルポイント用3サイズDL (.zip)
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="app-footer">
+        <p>&copy; 2026 いちスタ FREE | クライアントサイドCanvasでの高速画像レンダリング</p>
+    </footer>
+
+</body>
+</html>
